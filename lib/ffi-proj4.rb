@@ -158,7 +158,7 @@ module Proj4
   end
 
   module Constants
-    VERSION = File.read(File.join(PROJ4_BASE, %w{ .. .. VERSION })).strip
+    VERSION = Proj4::FFIProj4::VERSION
     PROJ4_VERSION = if Proj4.version =~ /Rel\. (\d+)\.(\d+)\.(\d+)/
       "#{$1}#{$2}#{$3}".to_f
     end

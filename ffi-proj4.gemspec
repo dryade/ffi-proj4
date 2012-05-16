@@ -4,7 +4,7 @@ require "ffi-proj4/version"
 
 Gem::Specification.new do |s|
   s.name       = 'ffi-proj4'
-  s.version     = Proj4::VERSION
+  s.version     = Proj4::FFIProj4::VERSION
   s.authors     = ["Luc Donnet", "Dark Panda"]
   s.email       = ["luc@dryade.net"]
   s.homepage    = "https://github.com/dryade/ffi-proj4"
