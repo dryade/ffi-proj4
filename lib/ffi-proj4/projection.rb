@@ -135,7 +135,7 @@ module Proj4
         Point.new(
           x_ptr.read_double,
           y_ptr.read_double,
-          z_ptr.read_double
+          (z_ptr.read_double unless z.nil?)
         )
       else
         raise TransformError.new(FFIProj4.pj_strerrno(result))
