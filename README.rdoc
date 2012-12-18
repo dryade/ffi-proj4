@@ -1,0 +1,3 @@
+= Ninoxe {<img src="https://travis-ci.org/dryade/ffi-proj4.png?branch=master" alt="Build Status" />}[https://travis-ci.org/dryade/ffi-proj4] {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/dryade/ffi-proj4]
+
+This project rocks and uses MIT-LICENSE.

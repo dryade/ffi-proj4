@@ -1,42 +1,38 @@
 module Proj4
-  # This class represents a point in either lon/lat or projected x/y coordinates.
   class Point
-    
-    # X coordinate or longitude
-    attr_accessor :x
+    include Proj4::Tools
 
-    # Y coordinate or latitude
-    attr_accessor :y
+    attr_accessor :x, :y, :z
 
-    # Z coordinate (height)
-    attr_accessor :z
-
-    # Create new Proj4::Point object from coordinates.
-    def initialize(x, y, z=0)
-      @x = x
-      @y = y
-      @z = z
+    def initialize(x, y, z = nil)
+      @x, @y, @z = x, y, z
     end
 
-    # Get longitude/x coordinate.
-    def lon
-      x
+    alias :lon :x
+    alias :lon= :x=
+    alias :lat :y
+    alias :lat= :y=
+
+    def to_deg!
+      self.x = rad_to_deg(self.x)
+      self.y = rad_to_deg(self.y)
+      self.z = rad_to_deg(self.z) unless self.z.nil?
+      self
     end
 
-    # Get latitude/y coordinate.
-    def lat
-      y
+    def to_deg
+      self.dup.to_deg!
     end
 
-    # Set longitude/x coordinate.
-    def lon=(lon)
-      @x = lon
+    def to_rad!
+      self.x = deg_to_rad(self.x)
+      self.y = deg_to_rad(self.y)
+      self.z = deg_to_rad(self.z) unless self.z.nil?
+      self
     end
 
-    # Set latitude/y coordinate.
-    def lat=(lat)
-      @y = lat
+    def to_rad
+      self.dup.to_rad!
     end
-
   end
 end

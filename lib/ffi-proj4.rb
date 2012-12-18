@@ -2,6 +2,8 @@
 require 'rubygems'
 require 'ffi'
 require 'rbconfig'
+require 'ffi-proj4/version'
+require 'ffi-proj4/error'
 
 #ENV['PROJ_LIB'] = File.join(File.dirname(__FILE__), %w{ .. data }) unless ENV['PROJ_LIB']
 #p ENV['PROJ_LIB']
@@ -20,21 +22,13 @@ module Proj4
 
   module FFIProj4
     def self.proj4_library_path
-      return @proj4_library_path if @proj4_library_path
+      return @proj4_library_path if defined?(@proj4_library_path)
 
-      paths = if ENV['PROJ4_LIBRARY_PATH']
-        [ ENV['PROJ4_LIBRARY_PATH'] ]
-      else
-        [ '/usr/local/{lib64,lib}', '/opt/local/{lib64,lib}', '/usr/{lib64,lib}' ]
-      end
-
-      lib = if FFI::Platform::IS_MAC
-        'libproj.dylib'
-      elsif FFI::Platform::IS_WINDOWS
+      lib = if FFI::Platform::IS_WINDOWS
         # For MinGW and the official binaries
         '{libproj-?,proj}.dll'
       else
-        'libproj.so'
+        "libproj.#{FFI::Platform::LIBSUFFIX}"
       end
 
       paths = if ENV['PROJ4_LIBRARY_PATH']
@@ -57,10 +51,6 @@ module Proj4
     FFI_LAYOUT = {
       :pj_get_release => [
         :string
-      ],
-
-      :pj_transform => [
-        :int, :pointer, :pointer, :long, :int, :pointer, :pointer, :pointer
       ],
 
       :pj_init_plus => [
@@ -158,10 +148,12 @@ module Proj4
   end
 
   module Constants
-    VERSION = Proj4::FFIProj4::VERSION
+
     PROJ4_VERSION = if Proj4.version =~ /Rel\. (\d+)\.(\d+)\.(\d+)/
       "#{$1}#{$2}#{$3}".to_f
     end
+
+    LIBVERSION = PROJ4_VERSION
 
     RAD_TO_DEG = 57.29577951308232
     DEG_TO_RAD = 0.0174532925199432958

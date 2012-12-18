@@ -7,21 +7,22 @@ module Proj4
     )
 
     def initialize(*args)
-      if args.first.is_a?(FFI::Pointer)
-        super(*args)
-      else
-        self[:x] = if args.first.respond_to?(:read_double)
-          args.first.read_double
+      case args.first
+        when FFI::Pointer, FFI::Buffer
+          super
         else
-          args.first.to_f
-        end
-
-        self[:y] = if args[1].respond_to?(:read_double)
-          args.first.read_double
-        else
-          args[1].to_f
-        end
+          super()
+          self.init(*args)
       end
+    end
+
+    def init(*args)
+      if !args.empty?
+        self[:x] = args[0].to_f
+        self[:y] = args[1].to_f
+      end
+
+      self
     end
 
     def x=(v)
@@ -38,6 +39,26 @@ module Proj4
 
     def y
       self[:y]
+    end
+
+    def to_deg!
+      self[:x] = self[:x] * Proj4::RAD_TO_DEG
+      self[:y] = self[:y] * Proj4::RAD_TO_DEG
+      self
+    end
+
+    def to_deg
+      self.dup.to_deg!
+    end
+
+    def to_rad!
+      self[:x] = self[:x] * Proj4::DEG_TO_RAD
+      self[:y] = self[:y] * Proj4::DEG_TO_RAD
+      self
+    end
+
+    def to_rad
+      self.dup.to_rad!
     end
   end
 end
