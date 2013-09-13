@@ -139,10 +139,12 @@ module Proj4
 
     def proj_lib=(lib)
       @proj_lib = lib
-      if RUBY_PLATFORM == 'java'
-        FFIProj4.setenv('PROJ_LIB', lib, 1)
-      else
-        ENV['PROJ_LIB'] = lib
+      if lib != ENV['PROJ_LIB']
+        if RUBY_PLATFORM == 'java'
+          FFIProj4.setenv('PROJ_LIB', lib, 1)
+        else
+          ENV['PROJ_LIB'] = lib
+        end
       end
     end
   end
