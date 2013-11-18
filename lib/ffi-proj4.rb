@@ -36,7 +36,7 @@ module Proj4
       elsif FFI::Platform::IS_WINDOWS
         ENV['PATH'].split(File::PATH_SEPARATOR)
       else
-        [ '/usr/local/{lib64,lib}', '/opt/local/{lib64,lib}', '/usr/{lib64,lib}' ]
+        [ '/usr/local/{lib64,lib}', '/opt/local/{lib64,lib}', '/usr/{lib64,lib}', '/usr/lib/{x86_64,i386}-linux-gnu' ]
       end
 
       @proj4_library_path = Dir.glob(paths.collect { |path|
@@ -139,12 +139,10 @@ module Proj4
 
     def proj_lib=(lib)
       @proj_lib = lib
-      if lib != ENV['PROJ_LIB']
-        if RUBY_PLATFORM == 'java'
-          FFIProj4.setenv('PROJ_LIB', lib, 1)
-        else
-          ENV['PROJ_LIB'] = lib
-        end
+      if RUBY_PLATFORM == 'java' && FFIProj4.respond_to?(:setenv)
+        FFIProj4.setenv('PROJ_LIB', lib, 1)
+      else
+        ENV['PROJ_LIB'] = lib
       end
     end
   end
