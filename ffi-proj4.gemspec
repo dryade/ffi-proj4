@@ -5,7 +5,6 @@ require File.expand_path('../lib/ffi-proj4/version', __FILE__)
 Gem::Specification.new do |s|
   s.name = "dr-ffi-proj4"
   s.version = Proj4::VERSION
-  s.platform = Gem::Platform::RUBY
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["J Smith"]
   s.description = "An ffi wrapper for the PROJ.4 Cartographic Projections library."
